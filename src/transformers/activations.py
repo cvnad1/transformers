@@ -203,13 +203,13 @@ class PANActivation(nn.Module):
     super(PANActivation, self).__init__()
 
     self.r = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
-    nn.init.normal_(self.r, mean=0.0, std=0.02)
+    nn.init.xavier_normal_(self.r, gain=0.02)
 
     self.s = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
-    nn.init.normal_(self.s, mean=0.0, std=0.02)
+    nn.init.xavier_normal_(self.s, gain=0.02)
 
     self.t = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
-    nn.init.normal_(self.t, mean=0.0, std=0.02)
+    nn.init.xavier_normal_(self.t, gain=0.02)
 
    def forward(self, input):
     return self.r*nn.functional.relu(input) + self.s*nn.functional.sigmoid(input) + self.t*nn.functional.tanh(input)
@@ -236,7 +236,7 @@ ACT2CLS = {
     "silu": nn.SiLU,
     "swish": nn.SiLU,
     "tanh": nn.Tanh,
-    "rsg": PANActivation,
+    "rst": PANActivation,
 }
 ACT2FN = ClassInstantier(ACT2CLS)
 
