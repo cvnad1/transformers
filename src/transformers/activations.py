@@ -203,16 +203,16 @@ class PANActivation(nn.Module):
     super(PANActivation, self).__init__()
 
     self.r = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
-    nn.init.xavier_uniform_(self.r, gain=nn.init.calculate_gain('relu'))
+    nn.init.normal_(self.r, mean=0.0, std=0.02)
 
     self.s = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
-    nn.init.xavier_uniform_(self.s)
+    nn.init.normal_(self.s, mean=0.0, std=0.02)
 
-    self.g = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
-    nn.init.xavier_uniform_(self.g, gain=nn.init.calculate_gain('relu'))
+    self.t = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
+    nn.init.normal_(self.t, mean=0.0, std=0.02)
 
    def forward(self, input):
-    return self.r*nn.functional.relu(input) + self.s*nn.functional.silu(input) + self.g*nn.functional.gelu(input)
+    return self.r*nn.functional.relu(input) + self.s*nn.functional.sigmoid(input) + self.t*nn.functional.tanh(input)
 
 
 
