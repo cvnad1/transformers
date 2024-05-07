@@ -197,6 +197,25 @@ class ClassInstantier(OrderedDict):
         return cls(**kwargs)
 
 
+class PANActivation(nn.Module):
+
+   def __init__(self):
+    super(PANActivation, self).__init__()
+
+    self.r = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
+    nn.init.xavier_uniform_(self.r, gain=nn.init.calculate_gain('relu'))
+
+    self.s = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
+    nn.init.xavier_uniform_(self.s)
+
+    self.g = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
+    nn.init.xavier_uniform_(self.g, gain=nn.init.calculate_gain('relu'))
+
+   def forward(self, input):
+    return self.r*nn.functional.relu(input) + self.s*nn.functional.silu(input) + self.g*nn.functional.gelu(input)
+
+
+
 ACT2CLS = {
     "gelu": GELUActivation,
     "gelu_10": (ClippedGELUActivation, {"min": -10, "max": 10}),
@@ -217,6 +236,7 @@ ACT2CLS = {
     "silu": nn.SiLU,
     "swish": nn.SiLU,
     "tanh": nn.Tanh,
+    "rsg": PANActivation,
 }
 ACT2FN = ClassInstantier(ACT2CLS)
 
