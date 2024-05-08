@@ -212,7 +212,7 @@ class PANActivation(nn.Module):
     nn.init.normal_(self.t,  mean = 0.0, std=0.02)
 
    def forward(self, input):
-    return nn.functional.relu(input) + nn.functional.sigmoid(input) + nn.functional.tanh(input)
+    return 0.33*(nn.functional.relu(input) + nn.functional.silu(input) + nn.functional.gelu(input))
 
 
 
@@ -236,7 +236,7 @@ ACT2CLS = {
     "silu": nn.SiLU,
     "swish": nn.SiLU,
     "tanh": nn.Tanh,
-    "rst": PANActivation,
+    "rsg": PANActivation,
 }
 ACT2FN = ClassInstantier(ACT2CLS)
 
