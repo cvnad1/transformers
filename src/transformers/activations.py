@@ -203,16 +203,16 @@ class PANActivation(nn.Module):
     super(PANActivation, self).__init__()
 
     self.r = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
-    nn.init.normal_(self.r, mean = 0.0, std=0.02)
+    nn.init.kaiming_normal_(self.r)
 
     self.s = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
-    nn.init.normal_(self.s,  mean = 0.0, std=0.02)
+    nn.init.kaiming_normal_(self.s)
 
-    self.t = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
-    nn.init.normal_(self.t,  mean = 0.0, std=0.02)
+    self.g = torch.nn.Parameter(torch.empty(1,1), requires_grad=True)
+    nn.init.kaiming_normal_(self.g)
 
    def forward(self, input):
-    return 0.33*(nn.functional.relu(input) + nn.functional.silu(input) + nn.functional.gelu(input))
+    return self.r*nn.functional.relu(input) + self.s*nn.functional.silu(input) + self.g*nn.functional.gelu(input)
 
 
 
