@@ -203,13 +203,13 @@ class PANActivation(nn.Module):
     super(PANActivation, self).__init__()
 
     self.r = torch.nn.Parameter(torch.empty(1,1))
-    nn.init.truncated_normal_(self.r, mean=0.0, std=0.02)
+    nn.init.trunc_normal_(self.r, mean=0.0, std=0.02)
 
     self.s = torch.nn.Parameter(torch.empty(1,1))
-    nn.init.truncated_normal_(self.s, mean=0.0, std=0.02)
+    nn.init.trunc_normal_(self.s, mean=0.0, std=0.02)
 
     self.g = torch.nn.Parameter(torch.empty(1,1))
-    nn.init.truncated_normal_(self.g, mean=0.0, std=0.02)
+    nn.init.trunc_normal_(self.g, mean=0.0, std=0.02)
 
    def forward(self, input):
     return 0.33*(self.r*nn.functional.relu(input) + self.s*nn.functional.silu(input) + self.g*nn.functional.gelu(input))
