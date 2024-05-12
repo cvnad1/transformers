@@ -202,8 +202,17 @@ class PANActivation(nn.Module):
    def __init__(self):
     super(PANActivation, self).__init__()
 
+    self.r = nn.parameter.Parameter(torch.empty(1,1), requires_grad = True)
+    nn.init.trunc_normal_(self.r, mean=0, std=0.02)
+
+    self.s = nn.parameter.Parameter(torch.empty(1,1), requires_grad = True)
+    nn.init.trunc_normal_(self.s, mean=0, std=0.02)
+
+    self.g = nn.parameter.Parameter(torch.empty(1,1), requires_grad = True)
+    nn.init.trunc_normal_(self.g, mean=0, std=0.02)
+
    def forward(self, input):
-    return (nn.functional.relu(input) + nn.functional.silu(input) + nn.functional.gelu(input))/3
+    return (self.r*nn.functional.relu(input) + self.s*nn.functional.silu(input) +self.g* nn.functional.gelu(input))/3
 
 
 
